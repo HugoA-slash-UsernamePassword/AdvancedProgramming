@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject weapon;
+    public Camera cam;
     public int range = 3;
     public float speed = 6.0f;
     public float jumpSpeed = 8.0f;
@@ -23,14 +24,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Hit
-        //}
-        //if (isAttacking)
-        //{
-
-        //}
         if (Input.GetKeyDown(KeyCode.Mouse0) && isAttacking == false)
         {
             isAttacking = true;
@@ -49,8 +42,15 @@ public class Player : MonoBehaviour
         }
         if (controller.isGrounded)
         {
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            Vector3 euler = cam.transform.eulerAngles;
+            transform.rotation = Quaternion.AngleAxis(euler.y, Vector3.up);
+
+            float inputH = Input.GetAxis("Horizontal");
+            float inputV = Input.GetAxis("Vertical");
+
+            moveDirection = new Vector3(inputH, 0, inputV);
             moveDirection = transform.TransformDirection(moveDirection);
+
             moveDirection *= speed;
             if (Input.GetButton("Jump")) moveDirection.y = jumpSpeed;
 

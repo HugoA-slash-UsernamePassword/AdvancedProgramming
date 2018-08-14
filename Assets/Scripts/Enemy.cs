@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    private int health = 200;
+    private int health = 2000000;
     
     public int Health
     {

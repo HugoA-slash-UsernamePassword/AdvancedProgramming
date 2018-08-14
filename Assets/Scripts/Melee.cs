@@ -8,7 +8,7 @@ public class Melee : MonoBehaviour
     public BoxCollider hitBox;
     public float hitDuration = 1f;
     // Use this for initialization
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         Enemy enemy = other.GetComponent<Enemy>();
         if (enemy != null)
