@@ -5,6 +5,14 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    public enum State
+    {
+        Patrol,
+        Seek
+    }
+
+    public State currentState = State.Patrol;
+
     private int health = 2000000;
     
     public int Health
@@ -38,17 +46,21 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target)
+        switch (currentState)
         {
-            agent.SetDestination(target.position);
+            case State.Patrol:
+                Patrol();
+                break;
+            case State.Seek:
+                Seek();
+                break;
+            default:
+                break;
         }
-        else
+        if (currentIndex >= waypoints.Length)
         {
-            if(currentIndex >= waypoints.Length)
-            {
-                currentIndex = 0;
-                System.Array.Reverse(waypoints);
-            }
+            currentIndex = 0;
+            System.Array.Reverse(waypoints);
         }
         Transform point = waypoints[currentIndex];
         if (Closeness(point.position, DistanceToWaypoint)) currentIndex++;
@@ -62,8 +74,20 @@ public class Enemy : MonoBehaviour
                 break;
             }
         }
-        if(!isFollowingPlayer) point = waypoints[currentIndex];
+        if (!isFollowingPlayer)
+        {
+            point = waypoints[currentIndex];
+        }
         agent.SetDestination(point.position);
+    }
+
+    void Patrol()
+    {
+
+    }
+    void Seek()
+    {
+
     }
 
     public void DealDamage(int damageDealt)
@@ -82,7 +106,6 @@ public class Enemy : MonoBehaviour
         {
             return true;
         }
-        Debug.Log("what");
         return false;
     }
 }
